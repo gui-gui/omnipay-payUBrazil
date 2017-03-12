@@ -56,7 +56,7 @@ class AuthorizeRequestTest extends TestCase
                 'language' => 'pt',
                 'apiKey' => '4Vj8eK4rloUd272L48hsrarnUA',
                 'apiLogin' => 'pRRXKOl8ikMmt9u',
-                'transactionId' => '111112',
+                'transactionId' => '123456',
                 'accountId' => '512327',
                 'merchantId' => '508029',
                 'clientIp' => '127.0.0.1',
@@ -100,7 +100,7 @@ class AuthorizeRequestTest extends TestCase
         $data = $this->request->getData();
 
         $this->assertSame('512327', $data['transaction']['order']['accountId']);  
-        $this->assertSame('111112', $data['transaction']['order']['referenceCode']);  
+        $this->assertSame('123456', $data['transaction']['order']['referenceCode']);  
         $this->assertSame('pt', $data['transaction']['order']['language']);  
         $this->assertSame($this->request->getSignature(), $data['transaction']['order']['signature']);  
         $this->assertStringStartsWith('http://requestb.in/', $data['transaction']['order']['notifyUrl']);
@@ -147,9 +147,9 @@ class AuthorizeRequestTest extends TestCase
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isPending());
         $this->assertFalse($response->isRedirect());
-        $this->assertSame(840617842, $response->getOrderReference());
+        $this->assertSame(840624432, $response->getOrderReference());
         $this->assertSame('APPROVED', $response->getCode());
-        $this->assertSame('bec5c24e-07cd-4689-80a9-7cfc254dcd56', $response->getTransactionReference());
+        $this->assertSame('8d184190-460f-4b06-a33a-20f2ce5e81e3', $response->getTransactionReference());
         $this->assertNull($response->getMessage());
 
     }
@@ -162,10 +162,10 @@ class AuthorizeRequestTest extends TestCase
         $this->assertFalse($response->isSuccessful());
         $this->assertFalse($response->isPending());
         $this->assertFalse($response->isRedirect());
-        $this->assertSame(840617842, $response->getOrderReference());
-        $this->assertSame('ERROR', $response->getCode());
-        $this->assertSame('72ecc3d8-409d-488c-9fa8-bc4ba79d076f', $response->getTransactionReference());
-        $this->assertNotNull($response->getMessage());
+        $this->assertSame(840624431, $response->getOrderReference());
+        $this->assertSame('DECLINED', $response->getCode());
+        $this->assertSame('24cd47be-4d0d-4fd1-b733-a54778ede89d', $response->getTransactionReference());
+        $this->assertNull($response->getMessage());
 
     }
 
