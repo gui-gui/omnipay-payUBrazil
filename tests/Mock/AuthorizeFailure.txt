@@ -1,0 +1,31 @@
+HTTP/1.1 200 OK
+Server: PayU server
+Transfer-Encoding: chuncked
+Date: Fri, 10 Mar 2017 20:57:20 GMT
+Content-Type: application/json
+Status: 200 OK
+X-Frame-Options: sameorigin
+
+{
+  "code": "SUCCESS",
+  "error": null,
+  "transactionResponse": {
+    "orderId": 840617842,
+    "transactionId": "72ecc3d8-409d-488c-9fa8-bc4ba79d076f",
+    "state": "ERROR",
+    "paymentNetworkResponseCode": null,
+    "paymentNetworkResponseErrorMessage": null,
+    "trazabilityCode": null,
+    "authorizationCode": null,
+    "pendingReason": null,
+    "responseCode": "INTERNAL_PAYMENT_PROVIDER_ERROR",
+    "errorCode": "INTERNAL_ERROR",
+    "responseMessage": "Internal payment provider error. The traceability code cannot be empty",
+    "transactionDate": null,
+    "transactionTime": null,
+    "operationDate": null,
+    "referenceQuestionnaire": null,
+    "extraParameters": null,
+    "additionalInfo": null
+  }
+}

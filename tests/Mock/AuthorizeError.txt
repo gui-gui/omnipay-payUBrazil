@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Server: PayU server
+Transfer-Encoding: chuncked
+Date: Fri, 10 Mar 2017 20:57:20 GMT
+Content-Type: application/json
+Status: 200 OK
+X-Frame-Options: sameorigin
+
+{
+  "code": "ERROR",
+  "error": "Credenciais inválidas",
+  "transactionResponse": null
+}

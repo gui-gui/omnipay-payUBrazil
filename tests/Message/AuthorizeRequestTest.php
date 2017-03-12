@@ -12,6 +12,34 @@ use DateInterval;
 class AuthorizeRequestTest extends TestCase
 {
 
+    public function getValidCard()
+    {
+        return array(
+            'firstName' => 'John F',
+            'lastName' => 'Doe',
+            'number' => '4242424242424242',
+            'expiryMonth' => rand(1, 12),
+            'expiryYear' => gmdate('Y') + rand(1, 5),
+            'cvv' => rand(100, 999),
+            'billingAddress1' => 'Rua de Cobrança 70',
+            'billingAddress2' => 'Apt 101',
+            'billingCity' => 'Rio de Janeiro',
+            'billingPostcode' => '12345678',
+            'billingState' => 'RJ',
+            'billingCountry' => 'BR',
+            'billingPhone' => '(021)4444-4567',
+            'shippingAddress1' => 'Rua de Entrega 170',
+            'shippingAddress2' => 'Apt 102',
+            'shippingCity' => 'Rio de Janeiro',
+            'shippingPostcode' => '12345678',
+            'shippingState' => 'RJ',
+            'shippingCountry' => 'BR',
+            'shippingPhone' => '(011) 99999-9999',
+            'billingDocumentNumber' => '12.345.678/0001-11',
+            'shippingDocumentNumber' => '123.456.789-11',
+        );
+    }
+
     public function setUp()
     {
         $this->request = new AuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());
@@ -28,7 +56,7 @@ class AuthorizeRequestTest extends TestCase
                 'language' => 'pt',
                 'apiKey' => '4Vj8eK4rloUd272L48hsrarnUA',
                 'apiLogin' => 'pRRXKOl8ikMmt9u',
-                'transactionId' => '111111',
+                'transactionId' => '111112',
                 'accountId' => '512327',
                 'merchantId' => '508029',
                 'clientIp' => '127.0.0.1',
@@ -72,9 +100,9 @@ class AuthorizeRequestTest extends TestCase
         $data = $this->request->getData();
 
         $this->assertSame('512327', $data['transaction']['order']['accountId']);  
-        $this->assertSame('111111', $data['transaction']['order']['referenceCode']);  
+        $this->assertSame('111112', $data['transaction']['order']['referenceCode']);  
         $this->assertSame('pt', $data['transaction']['order']['language']);  
-        $this->assertSame('888312cd08ff2e0f08f8724be54646d5', $data['transaction']['order']['signature']);  
+        $this->assertSame($this->request->getSignature(), $data['transaction']['order']['signature']);  
         $this->assertStringStartsWith('http://requestb.in/', $data['transaction']['order']['notifyUrl']);
 
         $this->assertSame('12.00', $data['transaction']['order']['additionalValues']['TX_VALUE']['value']);
@@ -113,38 +141,44 @@ class AuthorizeRequestTest extends TestCase
 
     public function testSendSuccess()
     {
-        $card = array(
-            'firstName' => 'John F',
-            'lastName' => 'Doe',
-            'number' => '4242424242424242',
-            'expiryMonth' => rand(1, 12),
-            'expiryYear' => gmdate('Y') + rand(1, 5),
-            'cvv' => rand(100, 999),
-            'billingAddress1' => 'Rua de Cobrança 70',
-            'billingAddress2' => 'Apt 101',
-            'billingCity' => 'Rio de Janeiro',
-            'billingPostcode' => '12345678',
-            'billingState' => 'RJ',
-            'billingCountry' => 'BR',
-            'billingPhone' => '(021)4444-4567',
-            'shippingAddress1' => 'Rua de Entrega 170',
-            'shippingAddress2' => 'Apt 102',
-            'shippingCity' => 'Rio de Janeiro',
-            'shippingPostcode' => '12345678',
-            'shippingState' => 'RJ',
-            'shippingCountry' => 'BR',
-            'shippingPhone' => '(011) 99999-9999',
-            'billingDocumentNumber' => '12.345.678/0001-11',
-            'shippingDocumentNumber' => '123.456.789-11',
-        );
-
-        $this->request->setSignature();
-        $this->request->setCard($card);
-        
+        $this->setMockHttpResponse('AuthorizeSuccess.txt');
         $response = $this->request->send();
 
         $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isPending());
+        $this->assertFalse($response->isRedirect());
+        $this->assertSame(840617842, $response->getOrderReference());
+        $this->assertSame('APPROVED', $response->getCode());
+        $this->assertSame('bec5c24e-07cd-4689-80a9-7cfc254dcd56', $response->getTransactionReference());
+        $this->assertNull($response->getMessage());
 
+    }
+
+    public function testSendFailure()
+    {
+        $this->setMockHttpResponse('AuthorizeFailure.txt');
+        $response = $this->request->send();
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertFalse($response->isPending());
+        $this->assertFalse($response->isRedirect());
+        $this->assertSame(840617842, $response->getOrderReference());
+        $this->assertSame('ERROR', $response->getCode());
+        $this->assertSame('72ecc3d8-409d-488c-9fa8-bc4ba79d076f', $response->getTransactionReference());
+        $this->assertNotNull($response->getMessage());
+
+    }
+
+    public function testSendError()
+    {
+        $this->setMockHttpResponse('AuthorizeError.txt');
+        $response = $this->request->send();
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertFalse($response->isPending());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getData()['transactionResponse']);
+        $this->assertSame('Credenciais inválidas', $response->getMessage());
     }
 
 }
