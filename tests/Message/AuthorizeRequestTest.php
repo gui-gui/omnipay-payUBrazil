@@ -163,7 +163,7 @@ class AuthorizeRequestTest extends TestCase
         $this->assertFalse($response->isPending());
         $this->assertFalse($response->isRedirect());
         $this->assertSame(840624431, $response->getOrderReference());
-        $this->assertSame('DECLINED', $response->getCode());
+        $this->assertSame('DECLINED_TEST_MODE_NOT_ALLOWED', $response->getCode());
         $this->assertSame('24cd47be-4d0d-4fd1-b733-a54778ede89d', $response->getTransactionReference());
         $this->assertNull($response->getMessage());
 

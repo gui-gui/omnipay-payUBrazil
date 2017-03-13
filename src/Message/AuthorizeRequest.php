@@ -34,7 +34,12 @@ class AuthorizeRequest extends AbstractRequest
         $data['transaction']['order']['additionalValues']['TX_VALUE']['currency'] = $this->getCurrency();
         $data['transaction']['order']['buyer'] = $this->getBuyerData();
         // $data['transaction']['order']['payer'] = $this->getPayerData();
+        // TODO: 
+        // if token is defined
+        // $data['transaction']['creditCardTokenId'] = $this->getToken();
+        // else
         $data['transaction']['creditCard'] = $this->getCardData();
+        // endif
         $data['transaction']['extraParameters']['INSTALLMENTS_NUMBER'] = $this->getInstallments();
 
         return $data;
