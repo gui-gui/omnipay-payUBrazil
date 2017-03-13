@@ -22,7 +22,7 @@ class AuthorizeRequest extends AbstractRequest
         $data = array();
         $data['transaction']['type'] = 'AUTHORIZATION';
         $data['transaction']['paymentMethod'] = $this->getPaymentMethod();
-        $data['transaction']['paymentCountry'] = $this->getCard()->getCountry();
+        $data['transaction']['paymentCountry'] = 'BR';
         $data['transaction']['ipAddress'] = $this->getClientIp();
         $data['transaction']['order']['accountId'] = $this->getAccountId();
         $data['transaction']['order']['referenceCode'] = $this->getTransactionId();
@@ -34,12 +34,14 @@ class AuthorizeRequest extends AbstractRequest
         $data['transaction']['order']['additionalValues']['TX_VALUE']['currency'] = $this->getCurrency();
         $data['transaction']['order']['buyer'] = $this->getBuyerData();
         // $data['transaction']['order']['payer'] = $this->getPayerData();
-        // TODO: 
-        // if token is defined
-        // $data['transaction']['creditCardTokenId'] = $this->getToken();
-        // else
-        $data['transaction']['creditCard'] = $this->getCardData();
-        // endif
+        if($this->getToken())
+        {
+            $data['transaction']['creditCardTokenId'] = $this->getToken();
+        }
+        else
+        {
+            $data['transaction']['creditCard'] = $this->getCardData();
+        }
         $data['transaction']['extraParameters']['INSTALLMENTS_NUMBER'] = $this->getInstallments();
 
         return $data;

@@ -139,6 +139,35 @@ class AuthorizeRequestTest extends TestCase
 
     }
 
+    public function testGetDataUsingCardToken()
+    {
+        $this->request = new AuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());
+        $this->request->initialize(
+            array(
+                'amount' => '12.00',
+                'paymentMethod' => 'VISA',
+                'card' => $this->getValidCard(),
+                'notifyUrl' => 'http://requestb.in/13hshws1',
+                'installments' => 1,
+                'description' => 'Order 1',
+                'currency' => 'BRL',
+                'language' => 'pt',
+                'apiKey' => '4Vj8eK4rloUd272L48hsrarnUA',
+                'apiLogin' => 'pRRXKOl8ikMmt9u',
+                'transactionId' => '123456',
+                'accountId' => '512327',
+                'merchantId' => '508029',
+                'clientIp' => '127.0.0.1',
+                'testMode' => true,
+                'token' => 'TOKEN123',
+            )
+        );
+        $data = $this->request->getData();
+
+        $this->assertSame('TOKEN123', $data['transaction']['creditCardTokenId']);
+        $this->assertArrayNotHasKey('creditCard', $data['transaction']);
+    }
+
     public function testSendSuccess()
     {
         $this->setMockHttpResponse('AuthorizeSuccess.txt');

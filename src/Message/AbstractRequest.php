@@ -25,6 +25,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->liveEndpoint;
     }
 
+    public function getToken()
+    {
+        return $this->getParameter('token');
+    }
+
+    public function setToken($value)
+    {
+        return $this->setParameter('token', $value);
+    }
+
     public function getCard()
     {
         return $this->getParameter('card');
@@ -39,7 +49,6 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->setParameter('card', $value);
     }
     
-
     public function getApiKey()
     {
         return $this->getParameter('apiKey');
@@ -94,7 +103,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
 
     protected function insertBaseRequestData($data)
     {
-        $result = array_merge($data, $this->getBaseRequestData());
+        $result = array_merge($this->getBaseRequestData(), $data);
 
         return $result;
     }
