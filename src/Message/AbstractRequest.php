@@ -121,38 +121,38 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $data;
     }
 
-    protected function getPayerData()
-    {
-        $card = $this->getCard();
-        $payer = array();
+    // protected function getPayerData()
+    // {
+    //     $card = $this->getCard();
+    //     $payer = array();
 
-        $payer['fullName'] = $card->getName();
-        $payer['emailAddress'] = $card->getEmail();
-        $payer['contactPhone'] = $this->formatPhone($card->getPhone());
+    //     $payer['fullName'] = $card->getName();
+    //     $payer['emailAddress'] = $card->getEmail();
+    //     $payer['contactPhone'] = $this->formatPhone($card->getPhone());
         
-        if(strlen($card->getBillingDocumentNumber()) == 11)
-        {
-            $payer['dniNumber'] = $this->formatCpf($card->getBillingDocumentNumber());
-        }
+    //     if(strlen($card->getHolderDocumentNumber()) == 11)
+    //     {
+    //         $payer['dniNumber'] = $this->formatCpf($card->getHolderDocumentNumber());
+    //     }
         
-        if(strlen($card->getBillingDocumentNumber()) == 14)
-        {
-            $payer['cnpj'] = $card->getBillingDocumentNumber();
-        }
+    //     if(strlen($card->getHolderBusinessNumber()) == 14)
+    //     {
+    //         $payer['cnpj'] = $card->getHolderBusinessNumber();
+    //     }
 
-        $arrayAddress = $this->formatAddress($card->getAddress1() . ',' . $card->getAddress2());
-        if(!empty($arrayAddress['street1'])) 
-        {
-            $payer['billingAddress'] = $arrayAddress;
-        }
-        $payer['billingAddress']['city'] = $card->getCity();
-        $payer['billingAddress']['state'] = $card->getState();
-        $payer['billingAddress']['country'] = $card->getCountry();
-        $payer['billingAddress']['postalCode'] = $this->formatPostCode($card->getPostCode());
-        $payer['billingAddress']['phone'] = $this->formatPhone($card->getPhone());
+    //     $arrayAddress = $this->formatAddress($card->getAddress1() . ',' . $card->getAddress2());
+    //     if(!empty($arrayAddress['street1'])) 
+    //     {
+    //         $payer['billingAddress'] = $arrayAddress;
+    //     }
+    //     $payer['billingAddress']['city'] = $card->getCity();
+    //     $payer['billingAddress']['state'] = $card->getState();
+    //     $payer['billingAddress']['country'] = $card->getCountry();
+    //     $payer['billingAddress']['postalCode'] = $this->formatPostCode($card->getPostCode());
+    //     $payer['billingAddress']['phone'] = $this->formatPhone($card->getPhone());
 
-        return $payer;
-    }
+    //     return $payer;
+    // }
 
     protected function getBuyerData()
     {
@@ -163,14 +163,14 @@ abstract class AbstractRequest extends BaseAbstractRequest
         $buyer['emailAddress'] = $card->getEmail();
         $buyer['contactPhone'] = $this->formatPhone($card->getShippingPhone());
 
-        if(strlen($card->getShippingDocumentNumber()) == 11)
+        if(strlen($card->getHolderDocumentNumber()) == 11)
         {
-            $buyer['dniNumber'] = $this->formatCpf($card->getShippingDocumentNumber());
+            $buyer['dniNumber'] = $this->formatCpf($card->getHolderDocumentNumber());
         }
-
-        if(strlen($card->getShippingDocumentNumber()) == 14)
+        
+        if(strlen($card->getHolderBusinessNumber()) == 14)
         {
-            $buyer['cnpj'] = $card->getShippingDocumentNumber();
+            $buyer['cnpj'] = $card->getHolderBusinessNumber();
         }
 
         $arrayAddress = $this->formatAddress($card->getShippingAddress1() . ',' . $card->getShippingAddress2());

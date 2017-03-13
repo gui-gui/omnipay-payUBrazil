@@ -11,29 +11,32 @@ use Omnipay\Common\CreditCard as Card;
 class CreditCard extends Card
 {
     /**
-     * Get Document number (CPF or CNPJ).
+     * Get Document number (CPF).
      *
      * @return string
      */
-    public function getShippingDocumentNumber()
+    public function getHolderDocumentNumber()
     {
-        return $this->getParameter('shippingDocumentNumber');
+        return $this->getParameter('holderDocumentNumber');
     }
 
-    public function setShippingDocumentNumber($value)
+    public function setHolderDocumentNumber($value)
     {
-        // strip non-numeric characters
-        return $this->setParameter('shippingDocumentNumber', preg_replace("/[^0-9]/", '', $value));
+        return $this->setParameter('holderDocumentNumber', preg_replace("/[^0-9]/", '', $value));
     }    
-    
-    public function getBillingDocumentNumber()
+
+    /**
+     * Get Business number (CNPJ).
+     *
+     * @return string
+    */
+    public function getHolderBusinessNumber()
     {
-        return $this->getParameter('billingDocumentNumber');
+        return $this->getParameter('holderBusinessNumber');
     }
 
-    public function setBillingDocumentNumber($value)
+    public function setHolderBusinessNumber($value)
     {
-        // strip non-numeric characters
-        return $this->setParameter('billingDocumentNumber', preg_replace("/[^0-9]/", '', $value));
-    }
+        return $this->setParameter('holderBusinessNumber', preg_replace("/[^0-9]/", '', $value));
+    }    
 }

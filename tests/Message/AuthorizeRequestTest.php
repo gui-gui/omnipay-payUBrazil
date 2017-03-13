@@ -15,6 +15,7 @@ class AuthorizeRequestTest extends TestCase
     public function getValidCard()
     {
         return array(
+            'email' => 'email@email.com',
             'firstName' => 'John F',
             'lastName' => 'Doe',
             'number' => '4242424242424242',
@@ -35,8 +36,8 @@ class AuthorizeRequestTest extends TestCase
             'shippingState' => 'RJ',
             'shippingCountry' => 'BR',
             'shippingPhone' => '(011) 99999-9999',
-            'billingDocumentNumber' => '12.345.678/0001-11',
-            'shippingDocumentNumber' => '123.456.789-11',
+            'holderBusinessNumber' => '12.345.678/0001-11',
+            'holderDocumentNumber' => '123.456.789-11',
         );
     }
 
@@ -68,31 +69,7 @@ class AuthorizeRequestTest extends TestCase
 
     public function testGetData()
     {   
-        $card = array(
-            'email' => 'email@email.com',
-            'firstName' => 'John F',
-            'lastName' => 'Doe',
-            'number' => '4242424242424242',
-            'expiryMonth' => rand(1, 12),
-            'expiryYear' => gmdate('Y') + rand(1, 5),
-            'cvv' => rand(100, 999),
-            'billingAddress1' => 'Rua de Cobrança 70',
-            'billingAddress2' => 'Apt 101',
-            'billingCity' => 'Rio de Janeiro',
-            'billingPostcode' => '12345678',
-            'billingState' => 'RJ',
-            'billingCountry' => 'BR',
-            'billingPhone' => '(021)4444-4567',
-            'shippingAddress1' => 'Rua de Entrega 170',
-            'shippingAddress2' => 'Apt 102',
-            'shippingCity' => 'Rio de Janeiro',
-            'shippingPostcode' => '12345678',
-            'shippingState' => 'RJ',
-            'shippingCountry' => 'BR',
-            'shippingPhone' => '(011) 99999-9999',
-            'billingDocumentNumber' => '12.345.678/0001-11',
-            'shippingDocumentNumber' => '123.456.789-11',
-        );
+        $card = $this->getValidCard();
 
         $this->request->setSignature();
         $this->request->setCard($card);

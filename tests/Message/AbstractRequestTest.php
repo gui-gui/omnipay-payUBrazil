@@ -137,26 +137,26 @@ class AbstractRequestTest extends TestCase
     }
     
 
-    public function testGetPayerData()
-    {
-        $card = $this->getValidCard();
-        $card['postCode'] = '12345678';
+    // public function testGetPayerData()
+    // {
+    //     $card = $this->getValidCard();
+    //     $card['postCode'] = '12345678';
 
-        $this->request->setCard($card);
-        $data = $this->request->getPayerData();
+    //     $this->request->setCard($card);
+    //     $data = $this->request->getPayerData();
 
-        $phone = $this->request->formatPhone($this->request->getCard()->getBillingPhone());
-        $address = $this->request->formatAddress($this->request->getCard()->getBillingAddress1());
+    //     $phone = $this->request->formatPhone($this->request->getCard()->getBillingPhone());
+    //     $address = $this->request->formatAddress($this->request->getCard()->getBillingAddress1());
 
-        $this->assertSame($this->request->getCard()->getName(), $data['fullName']);
-        $this->assertSame($this->request->getCard()->getEmail(), $data['emailAddress']);
-        $this->assertSame($phone, $data['contactPhone']);
-        $this->assertSame($this->request->getCard()->getBillingCity(), $data['billingAddress']['city']);
-        $this->assertSame($this->request->getCard()->getBillingState(), $data['billingAddress']['state']);
-        $this->assertSame($this->request->getCard()->getBillingCountry(), $data['billingAddress']['country']);
-        $this->assertSame('12345-678', $data['billingAddress']['postalCode']);
-        $this->assertSame($phone, $data['billingAddress']['phone']);
-    }
+    //     $this->assertSame($this->request->getCard()->getName(), $data['fullName']);
+    //     $this->assertSame($this->request->getCard()->getEmail(), $data['emailAddress']);
+    //     $this->assertSame($phone, $data['contactPhone']);
+    //     $this->assertSame($this->request->getCard()->getBillingCity(), $data['billingAddress']['city']);
+    //     $this->assertSame($this->request->getCard()->getBillingState(), $data['billingAddress']['state']);
+    //     $this->assertSame($this->request->getCard()->getBillingCountry(), $data['billingAddress']['country']);
+    //     $this->assertSame('12345-678', $data['billingAddress']['postalCode']);
+    //     $this->assertSame($phone, $data['billingAddress']['phone']);
+    // }
 
         
     public function testCardData()
