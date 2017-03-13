@@ -1,6 +1,6 @@
 {
-    "name": "infinauta/omnipay-payu-br",
-    "description": "Omnipay adapter for payU Brasil",
+    "name": "infinauta/omnipay-payubrazil",
+    "description": "Omnipay adapter for payU Brazil",
     "type": "library",
     "require": {
         "omnipay/common": "^2.5"
