@@ -79,12 +79,10 @@ class Response extends AbstractResponse
      *
      * @return null|string A response code from the payment gateway
      */
-    // Using ['transactionResponse']['state'] but not sure if responseCode would be better
-    // PayU Documentation is lacking
     public function getCode()
     {
         if (!isset($this->data['error']) ) {
-            return $this->data['transactionResponse']['state'];
+            return $this->data['transactionResponse']['responseCode'];
         }
 
         return $this->data['code'];
