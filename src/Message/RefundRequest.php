@@ -2,7 +2,7 @@
 
 namespace Omnipay\PayUBrazil\Message;
 
-class RefundRequest extends AuthorizeRequest
+class RefundRequest extends AbstractRequest
 {
     public function getReason()
     {
@@ -16,9 +16,15 @@ class RefundRequest extends AuthorizeRequest
 
     public function getData()
     {
-        $data = parent::getData();
+        $this->validate('transactionId', 'orderReference');
+        
+        $data = array();
+
         $data['transaction']['type'] = 'REFUND';
-        $data['transaction']['reason'] = $this->getReason() ?: 'Omnipay refund';
+        $data['transaction']['order']['id'] = $this->getOrderReference();
+        $data['transaction']['parentTransactionId'] = $this->getTransactionReference();        
+        $data['transaction']['reason'] = $this->getReason() ?: 'Omnipay Refund';
+     
         return $data;
     }
 }

@@ -71,7 +71,6 @@ class AuthorizeRequestTest extends TestCase
     {   
         $card = $this->getValidCard();
 
-        $this->request->setSignature();
         $this->request->setCard($card);
 
         $data = $this->request->getData();
@@ -116,6 +115,37 @@ class AuthorizeRequestTest extends TestCase
 
     }
 
+    public function testGetDataForBoletoPaymentMethod()
+    {
+        $this->request = new AuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());
+        $this->request->initialize(
+            array(
+                'amount' => '12.00',                
+                'payment_method' => 'BOLETO',
+                'card' => $this->getValidCard(),
+                'notifyUrl' => 'http://requestb.in/13hshws1',
+                'installments' => 1,
+                'description' => 'Order 1',
+                'currency' => 'BRL',
+                'language' => 'pt',
+                'apiKey' => '4Vj8eK4rloUd272L48hsrarnUA',
+                'apiLogin' => 'pRRXKOl8ikMmt9u',
+                'transactionId' => '123456',
+                'accountId' => '512327',
+                'merchantId' => '508029',
+                'clientIp' => '127.0.0.1',
+                'testMode' => true,
+                'boleto_expiration_date' => '20 March 2017',
+            )
+        );
+        $data = $this->request->getData();
+
+        $this->assertSame('2017-03-20T03:00:00', $data['transaction']['expirationDate']);
+        $this->assertSame('7a3f24d68ce996c521ee0f160c34204a', $data['transaction']['order']['signature']);
+        $this->assertArrayNotHasKey('creditCard', $data['transaction']);
+        $this->assertArrayNotHasKey('creditCardTokenId', $data['transaction']);
+    }
+
     public function testGetDataUsingCardToken()
     {
         $this->request = new AuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());
@@ -142,6 +172,7 @@ class AuthorizeRequestTest extends TestCase
         $data = $this->request->getData();
 
         $this->assertSame('TOKEN123', $data['transaction']['creditCardTokenId']);
+        $this->assertSame('7a3f24d68ce996c521ee0f160c34204a', $data['transaction']['order']['signature']);
         $this->assertArrayNotHasKey('creditCard', $data['transaction']);
     }
 

@@ -6,12 +6,12 @@ class CaptureRequest extends AbstractRequest
 {
     public function getData()
     {
-        $this->validate('transactionReference');
-        $this->validate('orderReference');
+        $this->validate('transactionReference', 'orderReference');
 
         $data = array();
-        $data['transaction']['order']['id'] = $this->getOrderReference();
+        
         $data['transaction']['type'] = 'CAPTURE';
+        $data['transaction']['order']['id'] = $this->getOrderReference();
         $data['transaction']['parentTransactionId'] = $this->getTransactionReference();
 
         return $data;

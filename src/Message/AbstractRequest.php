@@ -89,6 +89,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->setParameter('accountId', $value);
     }
     
+    public function getOrderReference()
+    {
+        return $this->getParameter('orderReference');
+    }
+    
+    public function setOrderReference($value)
+    {
+        return $this->setParameter('orderReference', $value);
+    }
+
     public function getSignature()
     {
         return $this->getParameter('signature');

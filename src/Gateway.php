@@ -77,46 +77,31 @@ class Gateway extends AbstractGateway
         return $this->setParameter('testMode', $value);
     }
     
-    
-
 
     public function authorize(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\PayUBrazil\Message\AuthorizeRequest', $parameters);
     }
     
-    // public function capture(array $parameters = array())
-    // {
-    //     return $this->createRequest('\Omnipay\PayUBrazil\Message\CaptureRequest', $parameters);
-    // }
+    public function capture(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\PayUBrazil\Message\CaptureRequest', $parameters);
+    }
     
-    // public function purchase(array $parameters = array())
-    // {
-    //     return $this->createRequest('\Omnipay\PayUBrazil\Message\PurchaseRequest', $parameters);
-    // }
+    public function purchase(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\PayUBrazil\Message\PurchaseRequest', $parameters);
+    }
     
-
-    // public function refund(array $parameters = array())
-    // {
-    //     return $this->createRequest('\Omnipay\PayUBrazil\Message\RefundRequest', $parameters);
-    // }
+    public function refund(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\PayUBrazil\Message\RefundRequest', $parameters);
+    }
     
 
     // public function void(array $parameters = array())
     // {
     //     return $this->createRequest('\Omnipay\PayUBrazil\Message\VoidRequest', $parameters);
-    // }
-    
-
-    // public function createCard(array $parameters = array())
-    // {
-    //     return $this->createRequest('\Omnipay\PayUBrazil\Message\CreateCardRequest', $parameters);
-    // }
-    
-
-    // public function createCustomer(array $parameters = array())
-    // {
-    //     return $this->createRequest('\Omnipay\PayUBrazil\Message\CreateCustomerRequest', $parameters);
     // }
     
     // public function calculateInstallments(array $parameters = array())
