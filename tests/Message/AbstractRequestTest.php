@@ -171,5 +171,10 @@ class AbstractRequestTest extends TestCase
         $this->assertSame($card['cvv'], $data['securityCode']);
     }
 
+    public function testCreateResponse()
+    {
+        $response = $this->request->createResponse(array());
+        $this->assertInstanceOf('Omnipay\PayUBrazil\Message\Response', $response);
+    }
 
 }
