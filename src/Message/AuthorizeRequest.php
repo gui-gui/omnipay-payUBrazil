@@ -42,15 +42,20 @@ class AuthorizeRequest extends AbstractRequest
      * @param string $value defaults to atual date + 7 days
      * @return AuthorizeRequest provides a fluent interface
      */
-    public function setBoletoExpirationDate($value)
+    public function setBoletoExpirationDate($value = null)
     {
         if ($value) {
             $value = new \DateTime($value, new \DateTimeZone('UTC'));
-            $value = new \DateTime($value->format('Y-m-d\T03:00:00'), new \DateTimeZone('UTC'));
-        } else {
-            $value = null;
         }
-        
+
+        if(!$value)
+        {
+            $value = new \DateTime($value, new \DateTimeZone('UTC'));
+            $value->add(new \DateInterval('P7D'));
+        }
+
+        $value = new \DateTime($value->format('Y-m-d\T03:00:00'), new \DateTimeZone('UTC'));
+
         return $this->setParameter('boletoExpirationDate', $value);
     }
 

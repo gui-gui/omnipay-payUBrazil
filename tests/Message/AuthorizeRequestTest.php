@@ -135,7 +135,7 @@ class AuthorizeRequestTest extends TestCase
                 'merchantId' => '508029',
                 'clientIp' => '127.0.0.1',
                 'testMode' => true,
-                'boleto_expiration_date' => '20 March 2017',
+                'boletoExpirationDate' => '20 March 2017',
             )
         );
         $data = $this->request->getData();
@@ -144,6 +144,38 @@ class AuthorizeRequestTest extends TestCase
         $this->assertSame('7a3f24d68ce996c521ee0f160c34204a', $data['transaction']['order']['signature']);
         $this->assertArrayNotHasKey('creditCard', $data['transaction']);
         $this->assertArrayNotHasKey('creditCardTokenId', $data['transaction']);
+    }
+
+    public function testNullBoletoExpirationDate()
+    {
+        $this->request = new AuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());
+        $this->request->initialize(
+            array(
+                'amount' => '12.00',                
+                'payment_method' => 'BOLETO',
+                'card' => $this->getValidCard(),
+                'notifyUrl' => 'http://requestb.in/13hshws1',
+                'installments' => 1,
+                'description' => 'Order 1',
+                'currency' => 'BRL',
+                'language' => 'pt',
+                'apiKey' => '4Vj8eK4rloUd272L48hsrarnUA',
+                'apiLogin' => 'pRRXKOl8ikMmt9u',
+                'transactionId' => '123456',
+                'accountId' => '512327',
+                'merchantId' => '508029',
+                'clientIp' => '127.0.0.1',
+                'testMode' => true,
+                'boletoExpirationDate' => null,
+            )
+        );
+        $data = $this->request->getData();
+
+        $date = new \DateTime("now", new \DateTimeZone('UTC'));
+        $date->add(new \DateInterval('P7D'));
+        $date = $date->format('Y-m-d\T03:00:00');
+
+        $this->assertSame($date, $data['transaction']['expirationDate']);
     }
 
     public function testGetDataUsingCardToken()
