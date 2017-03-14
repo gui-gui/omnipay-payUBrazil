@@ -211,10 +211,12 @@ class AuthorizeRequestTest extends TestCase
         $this->setMockHttpResponse('AuthorizeError.txt');
         $response = $this->request->send();
 
+        $data = $response->getData();
+
         $this->assertFalse($response->isSuccessful());
         $this->assertFalse($response->isPending());
         $this->assertFalse($response->isRedirect());
-        $this->assertNull($response->getData()['transactionResponse']);
+        $this->assertNull($data['transactionResponse']);
         $this->assertSame('Credenciais inválidas', $response->getMessage());
     }
 
