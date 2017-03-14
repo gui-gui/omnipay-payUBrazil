@@ -80,29 +80,35 @@ class GatewayTest extends GatewayTestCase
     {
         $request = $this->gateway->capture($this->getValidRequest());
         
+        $requestData = $request->getData();
+
         $this->assertInstanceOf('Omnipay\PayUBrazil\Message\CaptureRequest', $request);
-        $this->assertSame('CAPTURE', $request->getData()['transaction']['type']);
-        $this->assertSame('orderReference123', $request->getData()['transaction']['order']['id']);
-        $this->assertSame('transactionReference123', $request->getData()['transaction']['parentTransactionId']);
+        $this->assertSame('CAPTURE', $requestData['transaction']['type']);
+        $this->assertSame('orderReference123', $requestData['transaction']['order']['id']);
+        $this->assertSame('transactionReference123', $requestData['transaction']['parentTransactionId']);
     }
 
     public function testPurchase()
     {
         $request = $this->gateway->purchase($this->getValidRequest());
-        
+
+        $requestData = $request->getData();
+  
         $this->assertInstanceOf('Omnipay\PayUBrazil\Message\PurchaseRequest', $request);
         $this->assertSame('10.00', $request->getAmount());
-        $this->assertSame('AUTHORIZATION_AND_CAPTURE', $request->getData()['transaction']['type']);
+        $this->assertSame('AUTHORIZATION_AND_CAPTURE', $requestData['transaction']['type']);
     }
 
     public function testRefund()
     {
         $request = $this->gateway->refund($this->getValidRequest());
 
+        $requestData = $request->getData();
+
         $this->assertInstanceOf('Omnipay\PayUBrazil\Message\RefundRequest', $request);
-        $this->assertSame('REFUND', $request->getData()['transaction']['type']);
-        $this->assertSame('orderReference123', $request->getData()['transaction']['order']['id']);
-        $this->assertSame('refund reason', $request->getData()['transaction']['reason']);
+        $this->assertSame('REFUND', $requestData['transaction']['type']);
+        $this->assertSame('orderReference123', $requestData['transaction']['order']['id']);
+        $this->assertSame('refund reason', $requestData['transaction']['reason']);
     }
      
 }
