@@ -1,5 +1,6 @@
 /vendor
 /.vscode
+/build
 composer.lock
 composer.phar
 phpunit.xml
