@@ -1,0 +1,42 @@
+HTTP/1.1 200 OK
+Server: PayU server
+Transfer-Encoding: chuncked
+Date: Fri, 10 Mar 2017 20:57:20 GMT
+Content-Type: application/json
+Status: 200 OK
+X-Frame-Options: sameorigin
+
+{
+   "code": "SUCCESS",
+   "result": {
+      "payload": {
+         "id": "45678901",
+         "accountId": "543210",
+         "status": "CAPTURED",
+         "referenceCode": "2014-05-29  12:59:59",
+         "description": "Sale description",
+         "language": "pt",
+         "transactions": [
+            {
+               "id": "8366e912-11ac-41cd-8413-a4955ab44713",
+               "creditCard": {
+                  "maskedNumber": "411111******1111",
+                  "name": "Cardholder name",
+                  "issuerBank": "bank 123"
+               },
+               "type": "AUTHORIZATION_AND_CAPTURE",
+               "paymentMethod": "VISA",
+               "paymentCountry": "CO",
+               "transactionResponse": {
+                  "state": "APPROVED",
+                  "paymentNetworkResponseCode": "1",
+                  "trazabilityCode": "397985698",
+                  "authorizationCode": "678901",
+                  "responseCode": "APPROVED",
+                  "operationDate": "2014-05-29T12:59:59"
+               }
+            }
+         ]
+      }
+   }
+}

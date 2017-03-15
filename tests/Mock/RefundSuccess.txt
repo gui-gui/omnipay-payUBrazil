@@ -1,0 +1,35 @@
+HTTP/1.1 200 OK
+Server: PayU server
+Transfer-Encoding: chuncked
+Date: Fri, 10 Mar 2017 20:57:20 GMT
+Content-Type: application/json
+Status: 200 OK
+X-Frame-Options: sameorigin
+
+{
+   "code": "SUCCESS",
+   "result": {
+      "payload": {
+         "id": "3987200",
+         "accountId": "512321",
+         "status": "CANCELLED",
+         "referenceCode": "REF00123456",
+         "description": "Descripción venta",
+         "language": "pt",
+         "transactions": [
+            {
+               "id": "e8421426-8519-4150-9f00-b22737b85719",
+               "type": "REFUND",
+               "parentTransactionId": "ab752190-84db-4dd4-b010-3c72a619363b",
+               "paymentMethod": "VISA",
+               "source": "CANCELLATION_MODULE",
+               "paymentCountry": "BR",
+               "transactionResponse": {
+                  "state": "APPROVED",
+                  "responseCode": "NOT_ACCEPTED_TRANSACTION"
+               },
+            }
+         ]
+      }
+   }
+}
