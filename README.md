@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/gui-gui/omnipay-payubrazil.svg?branch=master)](https://travis-ci.org/gui-gui/omnipay-payubrazil)
-[![Code Climate](https://codeclimate.com/github/gui-gui/omnipay-payubrazil/badges/gpa.svg)](https://codeclimate.com/github/gui-gui/omnipay-payubrazil)
-[![Test Coverage](https://codeclimate.com/github/gui-gui/omnipay-payubrazil/badges/coverage.svg)](https://codeclimate.com/github/gui-gui/omnipay-payubrazil/coverage)
+[![Build Status](https://travis-ci.org/gui-gui/omnipay-payu-brazil.svg?branch=master)](https://travis-ci.org/gui-gui/omnipay-payu-brazil)
+[![Code Climate](https://codeclimate.com/github/gui-gui/omnipay-payu-brazil/badges/gpa.svg)](https://codeclimate.com/github/gui-gui/omnipay-payu-brazil)
+[![Test Coverage](https://codeclimate.com/github/gui-gui/omnipay-payu-brazil/badges/coverage.svg)](https://codeclimate.com/github/gui-gui/omnipay-payu-brazil/coverage)
 
 
 # WIP
