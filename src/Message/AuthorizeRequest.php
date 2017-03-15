@@ -77,22 +77,22 @@ class AuthorizeRequest extends AbstractRequest
 
     public function getData()
     {
-
-        if(!$this->getSignature())
-        {
-            $this->setSignature();
-        }
-
         $this->validate(
             'amount',
             'currency',
             'paymentMethod',
             'accountId',
             'merchantId',
-            'signature',
             'transactionId',
             'description'
             );
+
+        if(!$this->getSignature())
+        {
+            $this->setSignature();
+        }
+
+        $this->validate('signature');
         
         $data = array();
         $data['transaction']['type'] = 'AUTHORIZATION';
