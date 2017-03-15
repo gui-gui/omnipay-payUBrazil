@@ -76,7 +76,6 @@ class Gateway extends AbstractGateway
     {
         return $this->setParameter('testMode', $value);
     }
-    
 
     public function authorize(array $parameters = array())
     {
@@ -98,15 +97,15 @@ class Gateway extends AbstractGateway
         return $this->createRequest('\Omnipay\PayUBrazil\Message\RefundRequest', $parameters);
     }
     
+    // acceptNotification
+    // public function acceptNotification(array $parameters = array())
+    // {
+    //     return $this->createRequest('\Omnipay\SagePay\Message\ServerNotifyRequest', $parameters);
+    // }
 
     // public function void(array $parameters = array())
     // {
     //     return $this->createRequest('\Omnipay\PayUBrazil\Message\VoidRequest', $parameters);
-    // }
-    
-    // public function calculateInstallments(array $parameters = array())
-    // {
-    //     return $this->createRequest('\Omnipay\PayUBrazil\Message\InstallmentsRequest', $parameters);
     // }
     
     // public function fetchTransaction(array $parameters = array())
