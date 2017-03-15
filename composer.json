@@ -1,8 +1,9 @@
 {
-    "name": "infinauta/omnipay-payubrazil",
+    "name": "infinauta/omnipay-payu-brazil",
     "description": "Omnipay adapter for payU Brazil",
     "type": "library",
     "require": {
+        "php": "^5.3.3 || ^7.0",
         "omnipay/common": "^2.5"
     },
     "license": "MIT",
