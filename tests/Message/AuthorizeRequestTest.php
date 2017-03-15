@@ -178,6 +178,20 @@ class AuthorizeRequestTest extends TestCase
         $this->assertSame($date, $data['transaction']['expirationDate']);
     }
 
+    public function testBoletoDaysToExpire()
+    {
+        $this->assertSame('7',$this->request->getBoletoDaysToExpire());
+
+        $this->request->setBoletoDaysToExpire('10');
+
+        $date = new \DateTime("now", new \DateTimeZone('UTC'));
+        $date->add(new \DateInterval('P10D'));
+        $date = $date->format('Y-m-d\T03:00:00');
+
+        $this->assertSame('10', $this->request->getBoletoDaysToExpire());
+        $this->assertSame($date, $this->request->getBoletoExpirationDate());
+    }
+
     public function testGetDataUsingCardToken()
     {
         $this->request = new AuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());

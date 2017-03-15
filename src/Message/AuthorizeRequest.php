@@ -14,6 +14,7 @@ class AuthorizeRequest extends AbstractRequest
     // HIPERCARD
     // DINERS
 
+    
     public function getInstallments()
     {
         return $this->getParameter('installments');
@@ -24,6 +25,16 @@ class AuthorizeRequest extends AbstractRequest
         return $this->setParameter('installments', (int)$value);
     }
 
+    public function getBoletoDaysToExpire()
+    {
+        return $this->getParameter('boletoDaysToExpire') ?: '7';
+    }
+    
+    public function setBoletoDaysToExpire($value)
+    {
+        return $this->setParameter('boletoDaysToExpire', $value);
+    }
+    
      /**
      * Get the boleto expiration date
      * 
@@ -31,6 +42,11 @@ class AuthorizeRequest extends AbstractRequest
      */
     public function getBoletoExpirationDate($format = 'Y-m-d\TH:i:s')
     {
+        if(!$this->getParameter('boletoExpirationDate'))
+        {
+            $this->setBoletoExpirationDate();
+        }
+        
         $value = $this->getParameter('boletoExpirationDate');
         
         return $value ? $value->format($format) : null;
@@ -51,7 +67,7 @@ class AuthorizeRequest extends AbstractRequest
         if(!$value)
         {
             $value = new \DateTime($value, new \DateTimeZone('UTC'));
-            $value->add(new \DateInterval('P7D'));
+            $value->add(new \DateInterval('P' . $this->getBoletoDaysToExpire() . 'D'));
         }
 
         $value = new \DateTime($value->format('Y-m-d\T03:00:00'), new \DateTimeZone('UTC'));
@@ -98,9 +114,7 @@ class AuthorizeRequest extends AbstractRequest
         // $data['transaction']['order']['payer'] = $this->getPayerData();
         if($this->getPaymentMethod() == 'BOLETO' || $this->getPaymentMethod() == 'BOLETO_BANCARIO')
         {
-            if ( $this->getBoletoExpirationDate() ) {
-                $data['transaction']['expirationDate'] = $this->getBoletoExpirationDate();
-            }
+            $data['transaction']['expirationDate'] = $this->getBoletoExpirationDate();
             $data['transaction']['paymentMethod'] = 'BOLETO_BANCARIO';
         }
         else
