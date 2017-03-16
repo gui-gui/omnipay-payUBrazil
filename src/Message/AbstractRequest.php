@@ -138,7 +138,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
         $data = array();
         $data['language'] = 'pt';
         $data['command'] = 'SUBMIT_TRANSACTION';
-        $data['test'] = $this->getTestMode();
+        $data['test'] = $this->getTestMode() ? true : false;
 
         $data['merchant']['apiKey'] = $this->getApiKey();
         $data['merchant']['apiLogin'] = $this->getApiLogin();
