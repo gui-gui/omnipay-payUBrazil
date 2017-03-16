@@ -22,6 +22,30 @@ class AbstractRequestTest extends TestCase
     }
     
 
+   public function testHolderDocumentNumber()
+    {
+        $this->request->setHolderDocumentNumber('21847812040');
+        $this->assertSame('21847812040', $this->request->getHolderDocumentNumber());
+    }
+    
+    public function testSetHolderDocumentNumberStripsNonDigits()
+    {
+        $this->request->setHolderDocumentNumber('218. 478.120 - 40');
+        $this->assertSame('21847812040', $this->request->getHolderDocumentNumber());
+    }
+
+    public function testHolderBusinessNumber()
+    {
+        $this->request->setHolderBusinessNumber('12.345.678/0001-11');
+        $this->assertSame('12345678000111', $this->request->getHolderBusinessNumber());
+    }
+    
+    public function testSetHolderBusinessNumberStripsNonDigits()
+    {
+        $this->request->setHolderBusinessNumber('12.345.6 78 / 000 ###1- 11');
+        $this->assertSame('12345678000111', $this->request->getHolderBusinessNumber());
+    }
+
     public function testInsertBaseRequestData()
     {
         $data = array();
