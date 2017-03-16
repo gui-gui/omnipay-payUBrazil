@@ -72,9 +72,14 @@ class Gateway extends AbstractGateway
         return $this->getParameter('testMode');
     }
     
+    // The if ensures that the value is passed as true or false since the gateway throws an error for 1 or 0
     public function setTestMode($value)
     {
-        return $this->setParameter('testMode', $value);
+        if($value)
+        {
+            return $this->setParameter('testMode', true);
+        }
+        return $this->setParameter('testMode', false);
     }
 
     public function authorize(array $parameters = array())
