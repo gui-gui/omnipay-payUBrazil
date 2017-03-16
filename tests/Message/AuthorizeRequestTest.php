@@ -36,8 +36,6 @@ class AuthorizeRequestTest extends TestCase
             'shippingState' => 'RJ',
             'shippingCountry' => 'BR',
             'shippingPhone' => '(011) 99999-9999',
-            'holderBusinessNumber' => '12.345.678/0001-11',
-            'holderDocumentNumber' => '123.456.789-11',
         );
     }
 
@@ -61,7 +59,9 @@ class AuthorizeRequestTest extends TestCase
                 'accountId' => '512327',
                 'merchantId' => '508029',
                 'clientIp' => '127.0.0.1',
-                'testMode' => true
+                'testMode' => true,
+                'holderBusinessNumber' => '12.345.678/0001-11',
+                'holderDocumentNumber' => '123.456.789-11',
                 )
             );    
 

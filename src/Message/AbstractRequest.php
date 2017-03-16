@@ -2,7 +2,6 @@
 
 namespace Omnipay\PayUBrazil\Message;
 
-use Omnipay\PayUBrazil\CreditCard;
 use Omnipay\Common\Message\AbstractRequest as BaseAbstractRequest;
 
 /**
@@ -35,20 +34,6 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->setParameter('token', $value);
     }
 
-    public function getCard()
-    {
-        return $this->getParameter('card');
-    }
-
-    public function setCard($value)
-    {
-        if ($value && !$value instanceof CreditCard) {
-            $value = new CreditCard($value);
-        }
-
-        return $this->setParameter('card', $value);
-    }
-    
     public function getApiKey()
     {
         return $this->getParameter('apiKey');
@@ -110,6 +95,36 @@ abstract class AbstractRequest extends BaseAbstractRequest
 
         return $this->setParameter('signature', $signature);
     }
+
+    /**
+     * Get Document number (CPF).
+     *
+     * @return string
+     */
+    public function getHolderDocumentNumber()
+    {
+        return $this->getParameter('holderDocumentNumber');
+    }
+
+    public function setHolderDocumentNumber($value)
+    {
+        return $this->setParameter('holderDocumentNumber', preg_replace("/[^0-9]/", '', $value));
+    }    
+
+    /**
+     * Get Business number (CNPJ).
+     *
+     * @return string
+    */
+    public function getHolderBusinessNumber()
+    {
+        return $this->getParameter('holderBusinessNumber');
+    }
+
+    public function setHolderBusinessNumber($value)
+    {
+        return $this->setParameter('holderBusinessNumber', preg_replace("/[^0-9]/", '', $value));
+    }    
 
     protected function insertBaseRequestData($data)
     {
@@ -173,14 +188,14 @@ abstract class AbstractRequest extends BaseAbstractRequest
         $buyer['emailAddress'] = $card->getEmail();
         $buyer['contactPhone'] = $this->formatPhone($card->getShippingPhone());
 
-        if(strlen($card->getHolderDocumentNumber()) == 11)
+        if(strlen($this->getHolderDocumentNumber()) == 11)
         {
-            $buyer['dniNumber'] = $this->formatCpf($card->getHolderDocumentNumber());
+            $buyer['dniNumber'] = $this->formatCpf($this->getHolderDocumentNumber());
         }
         
-        if(strlen($card->getHolderBusinessNumber()) == 14)
+        if(strlen($this->getHolderBusinessNumber()) == 14)
         {
-            $buyer['cnpj'] = $card->getHolderBusinessNumber();
+            $buyer['cnpj'] = $this->getHolderBusinessNumber();
         }
 
         $arrayAddress = $this->formatAddress($card->getShippingAddress1() . ',' . $card->getShippingAddress2());
