@@ -16,7 +16,7 @@ class RefundRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('transactionId', 'orderReference');
+        $this->validate('transactionReference', 'orderReference');
         
         $data = array();
 
@@ -27,4 +27,10 @@ class RefundRequest extends AbstractRequest
      
         return $data;
     }
+
+    protected function createResponse($data)
+    {
+        return $this->response = new RefundResponse($this, $data);
+    }
+
 }
