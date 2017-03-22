@@ -27,7 +27,7 @@ X-Frame-Options: sameorigin
                "transactionResponse": {
                   "state": "APPROVED",
                   "responseCode": "NOT_ACCEPTED_TRANSACTION"
-               },
+               }
             }
          ]
       }

@@ -36,4 +36,3 @@ X-Frame-Options: sameorigin
          }
       }
    }
-}
