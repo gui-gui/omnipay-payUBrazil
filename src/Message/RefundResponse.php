@@ -16,7 +16,7 @@ class RefundResponse extends AbstractResponse
      */
     public function isSuccessful()
     {
-        if($this->getRefundState() === 'SUCCESSEDED')
+        if($this->getRefundState() === 'SUCCESS')
         {
             return true;
         }
@@ -46,7 +46,7 @@ class RefundResponse extends AbstractResponse
     {
         $state = $this->getRefundState();
 
-        if ($state === 'SUCCESSEDED' || $state == 'NONRESOLVED') 
+        if ($state === 'SUCCESS' || $state == 'NONRESOLVED') 
         {
             return $this->data['result']['payload']['transactions'][0]['id'];
         }
@@ -68,7 +68,7 @@ class RefundResponse extends AbstractResponse
     {
         $state = $this->getRefundState();
 
-        if ($state === 'SUCCESSEDED' || $state == 'NONRESOLVED') 
+        if ($state === 'SUCCESS' || $state == 'NONRESOLVED') 
         {
             return $this->data['result']['payload']['id'];
         }
@@ -92,7 +92,7 @@ class RefundResponse extends AbstractResponse
      */
     public function getMessage()
     {
-        return $this->data['error'];
+        return isset($this->data['error']) ? $this->data['error'] : null;
     }
 
     /**
@@ -102,11 +102,24 @@ class RefundResponse extends AbstractResponse
      */
     public function getCode()
     {
-        if (!isset($this->data['error']) ) {
-            return $this->data['transactionResponse']['responseCode'];
+        $state = $this->getRefundState();
+
+        if ($state === 'SUCCESS' || $state == 'NONRESOLVED') 
+        {
+            return $this->data['result']['payload']['status'];
         }
 
-        return $this->data['code'];
+        if($state === 'FAILED')
+        {
+            return $this->data['reportingResponse']['result']['payload']['status'];
+        }
+        
+        if($state === 'PENDING')
+        {
+            return $this->data['transactionResponse']['state'];
+        }
+
+        return isset($this->data['code']) ? $this->data['code'] : null;
     }
 
     public function getRefundState()
@@ -124,7 +137,7 @@ class RefundResponse extends AbstractResponse
     * setRefundState analyses the response and identifies which response type we got and simplifies the implementation
     * for the default response interface
     *
-    * @return 'SUCCESSEDED'|'FAILED'|'PENDING'|'NONRESOLVED'|'ERROR'
+    * @return 'SUCCESS'|'FAILED'|'PENDING'|'NONRESOLVED'|'ERROR'
     */
     protected function setRefundState()
     {
@@ -137,7 +150,7 @@ class RefundResponse extends AbstractResponse
                 return;
             }
             
-            // if $data['result'] is set this response is either NONRESOLVED or SUCCESSEDED
+            // if $data['result'] is set this response is either NONRESOLVED or SUCCESS
             if(isset($this->data['result']))
             {
                 $responseCode = isset($this->data['code']) ? $this->data['code'] : null; // not the same as getCode()
@@ -150,7 +163,7 @@ class RefundResponse extends AbstractResponse
                     && $responseParentTransacationReference === $this->request->getTransactionReference() 
                     && $responseTransactionState === 'APPROVED') 
                 {
-                    $this->refundState = 'SUCCESSEDED';
+                    $this->refundState = 'SUCCESS';
                     return;
                 }
 

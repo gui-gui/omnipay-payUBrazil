@@ -16,6 +16,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isRedirect());
         $this->assertSame('508cbdfb-ed85-48df-854a-92fcb649bf62', $response->getTransactionReference());
         $this->assertSame(840624437, $response->getOrderReference());
+        $this->assertSame('APPROVED', $response->getCode());
         $this->assertNull($response->getMessage());
     }
 
@@ -26,6 +27,10 @@ class ResponseTest extends TestCase
 
         $this->assertFalse($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getTransactionReference());
+        $this->assertNull($response->getOrderReference());
+        $this->assertNull($response->getOrderReference());
+        $this->assertSame('ERROR', $response->getCode());
         $this->assertStringStartsWith('O número do cartão de crédito não é válido', $response->getMessage());
     }
     

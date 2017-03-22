@@ -17,49 +17,75 @@ class RefundResponseTest extends TestCase
         );
     }
 
-    public function testSendSuccess()
+    public function testRefundSuccess()
     {
         $this->setMockHttpResponse('RefundSuccess.txt');
         $response = $this->request->send();
 
-        $this->assertSame('SUCCESSEDED', $response->getRefundState());
+        $this->assertSame('SUCCESS', $response->getRefundState());
         $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isPending());
         $this->assertFalse($response->isRedirect());
-        // $this->assertSame('e8421426-8519-4150-9f00-b22737b85719', $response->getTransactionReference());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('CANCELLED', $response->getCode());
+        $this->assertSame('e8421426-8519-4150-9f00-b22737b85719', $response->getTransactionReference());
 
     }
 
-    public function testSendPending()
+    public function testRefundPending()
     {
         $this->setMockHttpResponse('RefundPending.txt');
         $response = $this->request->send();
 
         $this->assertSame('PENDING', $response->getRefundState());
-        $this->assertTrue($response->isPending());
         $this->assertFalse($response->isSuccessful());
+        $this->assertTrue($response->isPending());
         $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('PENDING', $response->getCode());
+        $this->assertNull($response->getTransactionReference());
     }
 
-    public function testSendFailure()
+    public function testRefundNonResolved()
     {
-        $this->setMockHttpResponse('RefundFailure.txt');
+        $this->setMockHttpResponse('RefundNonResolved.txt');
+        $response = $this->request->send();
+
+        $this->assertSame('NONRESOLVED', $response->getRefundState());
+        $this->assertFalse($response->isSuccessful());
+        $this->assertFalse($response->isPending());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('CAPTURED', $response->getCode());
+        $this->assertSame('8366e912-11ac-41cd-8413-a4955ab44713', $response->getTransactionReference());
+    }
+
+    public function testRefundDeclined()
+    {
+        $this->setMockHttpResponse('RefundDeclined.txt');
         $response = $this->request->send();
 
         $this->assertSame('FAILED', $response->getRefundState());
         $this->assertFalse($response->isSuccessful());
         $this->assertFalse($response->isPending());
         $this->assertFalse($response->isRedirect());
-        // $this->assertSame('e8421426-8519-4150-9f00-b22737b85719', $response->getTransactionReference());
+        $this->assertNull($response->getMessage());
+        $this->assertSame('CAPTURED', $response->getCode());
+        $this->assertSame('e8421426-8519-4150-9f00-b22737b85720', $response->getTransactionReference());
 
     }
 
-    // public function testSendError()
-    // {
-    //     $this->setMockHttpResponse('CaptureFailure.txt');
-    //     $response = $this->request->send();
+    public function testRefundError()
+    {
+        $this->setMockHttpResponse('RefundFailure.txt');
+        $response = $this->request->send();
 
-    //     $this->assertFalse($response->isSuccessful());
-    //     $this->assertFalse($response->isRedirect());
-    //     $this->assertStringStartsWith('Internal payment provider error.', $response->getMessage());
-    // }
+        $this->assertFalse($response->isSuccessful());
+        $this->assertFalse($response->isPending());
+        $this->assertFalse($response->isRedirect());
+        $this->assertStringStartsWith('Invalid request', $response->getMessage());
+        $this->assertSame('ERROR', $response->getCode());
+        $this->assertNull($response->getTransactionReference());
+
+    }
 }
