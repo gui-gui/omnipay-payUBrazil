@@ -16,7 +16,7 @@ class RefundResponse extends AbstractResponse
      */
     public function isSuccessful()
     {
-        if($this->getRefundState() === 'REFUNDED')
+        if($this->getRefundState() === 'SUCCESSEDED')
         {
             return true;
         }
@@ -46,7 +46,7 @@ class RefundResponse extends AbstractResponse
     {
         $state = $this->getRefundState();
 
-        if ($state === 'REFUNDED' || $state == 'NONRESOLVED') 
+        if ($state === 'SUCCESSEDED' || $state == 'NONRESOLVED') 
         {
             return $this->data['result']['payload']['transactions'][0]['id'];
         }
@@ -68,7 +68,7 @@ class RefundResponse extends AbstractResponse
     {
         $state = $this->getRefundState();
 
-        if ($state === 'REFUNDED' || $state == 'NONRESOLVED') 
+        if ($state === 'SUCCESSEDED' || $state == 'NONRESOLVED') 
         {
             return $this->data['result']['payload']['id'];
         }
@@ -124,7 +124,7 @@ class RefundResponse extends AbstractResponse
     * setRefundState analyses the response and identifies which response type we got and simplifies the implementation
     * for the default response interface
     *
-    * @return 'REFUNDED'|'FAILED'|'PENDING'|'NONRESOLVED'|'ERROR'
+    * @return 'SUCCESSEDED'|'FAILED'|'PENDING'|'NONRESOLVED'|'ERROR'
     */
     protected function setRefundState()
     {
@@ -137,7 +137,7 @@ class RefundResponse extends AbstractResponse
                 return;
             }
             
-            // if $data['result'] is set this response is either NONRESOLVED or REFUNDED
+            // if $data['result'] is set this response is either NONRESOLVED or SUCCESSEDED
             if(isset($this->data['result']))
             {
                 $responseCode = isset($this->data['code']) ? $this->data['code'] : null; // not the same as getCode()
@@ -150,7 +150,7 @@ class RefundResponse extends AbstractResponse
                     && $responseParentTransacationReference === $this->request->getTransactionReference() 
                     && $responseTransactionState === 'APPROVED') 
                 {
-                    $this->refundState = 'REFUNDED';
+                    $this->refundState = 'SUCCESSEDED';
                     return;
                 }
 

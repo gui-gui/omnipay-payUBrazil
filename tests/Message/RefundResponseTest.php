@@ -22,7 +22,7 @@ class RefundResponseTest extends TestCase
         $this->setMockHttpResponse('RefundSuccess.txt');
         $response = $this->request->send();
 
-        $this->assertSame('REFUNDED', $response->getRefundState());
+        $this->assertSame('SUCCESSEDED', $response->getRefundState());
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         // $this->assertSame('e8421426-8519-4150-9f00-b22737b85719', $response->getTransactionReference());
