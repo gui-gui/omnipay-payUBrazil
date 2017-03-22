@@ -18,4 +18,9 @@ class FetchTransactionRequest extends AbstractRequest
 
         return $data;
     }
+
+    protected function createResponse($data)
+    {
+        return $this->response = new FetchTransactionResponse($this, $data);
+    }
 }

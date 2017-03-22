@@ -2,6 +2,7 @@
 
 namespace Omnipay\PayUBrazil\Message;
 
+use Mockery;
 use Omnipay\Tests\TestCase;
 
 class FetchTransactionRequestTest extends TestCase
@@ -9,7 +10,7 @@ class FetchTransactionRequestTest extends TestCase
 
     public function setUp()
     {
-        $this->request = new FetchTransactionRequest($this->getHttpClient(), $this->getHttpRequest());
+        $this->request = Mockery::mock('\Omnipay\PayUBrazil\Message\FetchTransactionRequest')->makePartial();
         $this->request->initialize(
             array(
                 'transactionId' => 111111
@@ -35,4 +36,9 @@ class FetchTransactionRequestTest extends TestCase
         $this->assertSame('https://api.payulatam.com/reports-api/4.0/service.cgi', $this->request->getEndpoint());
     }
 
+    public function testCreateResponse()
+    {
+        $response = $this->request->createResponse(array());
+        $this->assertInstanceOf('Omnipay\PayUBrazil\Message\FetchTransactionResponse', $response);
+    }
 }
