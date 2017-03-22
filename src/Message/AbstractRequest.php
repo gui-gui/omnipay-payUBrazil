@@ -305,7 +305,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
 
         $httpResponse = $httpRequest->send();
 
-        return $this->response = new Response($this, $httpResponse->json());
+        return $this->createResponse($httpResponse->json());
     }
 
     protected function getOptions()
