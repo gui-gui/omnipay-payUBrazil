@@ -5,9 +5,9 @@
 
 # WIP  
 
-not ready yet!
+not ready yet!  
 
--
+----
 
-Should be working for credit card payments
-Boletos are not implemented yet
+Should be working for credit card payments  
+Boletos are not implemented yet  
